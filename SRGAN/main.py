@@ -9,7 +9,7 @@ import pyrallis
 class TrainConfig:
     # Whether to download dataset for training
     train: field(default=True)
-
+    
     #def __post_init__():
         # if no default - uncomment
            
