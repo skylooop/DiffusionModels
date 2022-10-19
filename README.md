@@ -1,2 +1,1 @@
-# GANimplementations
-Implementations of papers on GANs from scratch. Mainly for self-education
+Later there will be papers with code
