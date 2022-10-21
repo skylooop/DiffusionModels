@@ -1,0 +1,20 @@
+        _|    _|  _|    _|    _|_|_|    _|_|_|  _|_|_|  _|      _|    _|_|_|      _|_|_|_|    _|_|      _|_|_|  _|_|_|_|
+        _|    _|  _|    _|  _|        _|          _|    _|_|    _|  _|            _|        _|    _|  _|        _|
+        _|_|_|_|  _|    _|  _|  _|_|  _|  _|_|    _|    _|  _|  _|  _|  _|_|      _|_|_|    _|_|_|_|  _|        _|_|_|
+        _|    _|  _|    _|  _|    _|  _|    _|    _|    _|    _|_|  _|    _|      _|        _|    _|  _|        _|
+        _|    _|    _|_|      _|_|_|    _|_|_|  _|_|_|  _|      _|    _|_|_|      _|        _|    _|    _|_|_|  _|_|_|_|
+        To login, `huggingface_hub` now requires a token generated from https://huggingface.co/settings/tokens .
+Token: Traceback (most recent call last):
+  File "/home/m_bobrin/anaconda3/envs/RL/bin/huggingface-cli", line 8, in <module>
+    sys.exit(main())
+  File "/home/m_bobrin/anaconda3/envs/RL/lib/python3.9/site-packages/huggingface_hub/commands/huggingface_cli.py", line 45, in main
+    service.run()
+  File "/home/m_bobrin/anaconda3/envs/RL/lib/python3.9/site-packages/huggingface_hub/commands/user.py", line 148, in run
+    token = getpass("Token: ")
+  File "/home/m_bobrin/anaconda3/envs/RL/lib/python3.9/getpass.py", line 77, in unix_getpass
+    passwd = _raw_input(prompt, stream, input=input)
+  File "/home/m_bobrin/anaconda3/envs/RL/lib/python3.9/getpass.py", line 146, in _raw_input
+    line = input.readline()
+  File "/home/m_bobrin/anaconda3/envs/RL/lib/python3.9/codecs.py", line 319, in decode
+    def decode(self, input, final=False):
+KeyboardInterrupt
