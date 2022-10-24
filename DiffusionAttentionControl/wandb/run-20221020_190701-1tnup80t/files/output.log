@@ -12,3 +12,6 @@
 12 -> jewels
 Generated Image with Promp Edit
 wandb: Network error (ReadTimeout), entering retry loop.
+wandb: Network error (ReadTimeout), entering retry loop.
+wandb: Network error (ConnectTimeout), entering retry loop.
+wandb: Network error (ReadTimeout), entering retry loop.
