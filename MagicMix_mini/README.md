@@ -1,4 +1,4 @@
 # MagicMix: Semantic Mixing with Diffusion Models
 
 
-![Architecture](arch.png)
+![Architecture](addons/arch.png)
