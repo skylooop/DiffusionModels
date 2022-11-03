@@ -14,8 +14,8 @@ from torchvision.transforms import ToTensor
 
 def MagicMix(get_processed_latents: list[torch.Tensor],
              scheduler,
-             unet,
              vae,
+             unet,
              text_embedding: torch.Tensor,
              uncond_emb: torch.Tensor,
              nu: float,
@@ -40,13 +40,13 @@ def MagicMix(get_processed_latents: list[torch.Tensor],
         noise_pred = noise_pred_uncond + scale * (noise_pred_text - noise_pred_uncond)
 
         # compute the previous noisy sample x_t -> x_t-1
-        latents = scheduler.step(noise_pred, t, latents).prev_sample
+        first = scheduler.step(noise_pred, t, first).prev_sample
         
         if i < len(get_processed_latents):
-            latents = latents * nu + (1 - nu) * get_processed_latents[i]
+            first = first * nu + (1 - nu) * get_processed_latents[i]
         
     del get_processed_latents
-    return latents        
+    return first        
         
         
 def prepare_models():
@@ -70,15 +70,13 @@ def prepare_models():
     return vae, unet, text_encoder, tokenizer
 
 def pil_to_latent(input_im, vae):
-    with torch.no_grad():
-        latent = vae.encode(ToTensor()(input_im).unsqueeze(0).to(torch.device("cuda")) * 2 - 1)
+    latent = vae.encode(ToTensor()(input_im).unsqueeze(0).to(torch.device("cuda")) * 2 - 1)
     return 0.18215 * latent.latent_dist.sample()
 
-def latents_to_pil(latents, vae):
+def latents_to_pil(vae, latents):
     # bath of latents -> list of images
     latents = (1 / 0.18215) * latents
-    with torch.no_grad():
-        image = vae.decode(latents).sample
+    image = vae.decode(latents).sample
     image = (image / 2 + 0.5).clamp(0, 1)
     image = image.detach().cpu().permute(0, 2, 3, 1).numpy()
     images = (image * 255).round().astype("uint8")
@@ -96,16 +94,18 @@ def make_scheduler_latents(
     
     start_of_embed = K_min
     processed_latents = []
+    
     for i in range(K_max - K_min):
         step = start_of_embed + i
         timesteps = scheduler.timesteps[-step] #get from lowest to highest
         timesteps = torch.tensor([timesteps] * noise.shape[0]).to(noise.device)
         
         diffusion_init_latent = sampled_latents.clone()
-        change_sampled_latents = scheduler.add_noise(
-            change_sampled_latents, noise, timesteps 
+        diffusion_init_latent = scheduler.add_noise(
+            diffusion_init_latent, noise, timesteps 
         )
-        processed_latents.append(change_sampled_latents)
+        
+        processed_latents.append(diffusion_init_latent)
     
     return list(reversed(processed_latents))
 
@@ -115,11 +115,11 @@ def semantic_mixture(params):
     
     image = Image.open(params.input_image).convert("RGB")
     
-    image = image.resize((512, 512))
+    image = image.resize((576, 576))
     vae, unet, text_encoder, tokenizer = prepare_models()
     sampled_from_latent = pil_to_latent(image, vae) #sample from prior distribution
     
-    height, width = image.shape[-2:]
+    height, width = torch.tensor(np.asarray((image))).shape[:-1]
     noise = torch.randn(
         (len(params.prompts), unet.in_channels, height // 8, width // 8)
     ).to(torch.device("cuda"))
@@ -132,18 +132,16 @@ def semantic_mixture(params):
     process_semantics = tokenizer(params.prompts,
                                   padding="max_length",
                                   max_length=tokenizer.model_max_length,
-                                  truncation=True, 
+                                  truncation=True,
                                   return_tensors="pt")
     
-    with torch.no_grad():
-        text_embeddings = text_encoder(process_semantics.input_ids.to("cuda"))[0]
-    max_length = text_embeddings.input_ids.shape[-1]
+    text_embeddings = text_encoder(process_semantics.input_ids.to("cuda"))[0]
+    max_length = process_semantics.input_ids.shape[-1]
     uncond_input = tokenizer(
         [""] * len(params.prompts), padding="max_length", max_length=max_length, return_tensors="pt"
     )
     
-    with torch.no_grad():
-        uncond_embeddings = text_encoder(uncond_input.input_ids.to("cuda"))[0] 
+    uncond_embeddings = text_encoder(uncond_input.input_ids.to("cuda"))[0] 
     
     #text_embeddings = torch.cat([uncond_embeddings, text_embeddings])
 
