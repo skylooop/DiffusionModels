@@ -25,10 +25,9 @@ def MagicMix(get_processed_latents: list[torch.Tensor],
              scale: float,
              reverse_steps: int):
     
-    offset = scheduler.config.get("steps_offset", 0)
-    init_timestep = K_max + offset
+    init_timestep = K_max
     init_timestep = min(init_timestep, reverse_steps)
-    t_start = max(reverse_steps - init_timestep + offset, 0)
+    t_start = max(reverse_steps - init_timestep, 0)
     
     latents = get_processed_latents[0] #not so many noise
     prompts_embeddings = torch.cat([uncond_emb, text_embedding])
