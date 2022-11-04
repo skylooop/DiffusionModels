@@ -10,7 +10,7 @@ from diffusers import LMSDiscreteScheduler
 
 @dataclass
 class MagicMixCFG:
-    input_image: Path = Path("macaw.jpg")
+    input_image: Path = Path("/home/m_bobrin/DiffusionModels/MagicMix_mini/src/macaw.jpg")
     exper_dir: Path = field(default=Path("/home/m_bobrin/DiffusionModels/MagicMix_mini/addons"))
     reverse_steps: int = field(default=50)
     #Number of steps (in paper K_min = k_min * reverse_steps)
@@ -19,7 +19,7 @@ class MagicMixCFG:
     #Bigger -> more like source image
     nu: float = field(default=0.7)
     guidance: float = field(default=8)
-    prompts = ["parrot", "coffee machine"]
+    prompts = ["coffee machine"]
     
     def __post_init__(self):
         self.K_min = int(self.reverse_steps * self.k_min)
@@ -38,7 +38,7 @@ def main(MM_cfg: MagicMixCFG):
     
     mixed_images = semantic_mixture(MM_cfg)
 
-    mixed_images[-1].save("ex.jpg")
+    mixed_images[0].save("ex.jpg")
 
 
 if __name__ == "__main__":
