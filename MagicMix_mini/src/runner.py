@@ -10,14 +10,14 @@ from diffusers import LMSDiscreteScheduler
 
 @dataclass
 class MagicMixCFG:
-    input_image: Path = Path("addons/cat.jpeg") #INSERT HERE PATH TO YOUR IMAGE
-    exper_dir: Path = field(default=Path("addons/"))
-    reverse_steps: int = field(default=50)
+    input_image: str = "../addons/cat.jpeg" #INSERT HERE PATH TO YOUR IMAGE
+    exper_dir: str = field(default="../addons/")
+    reverse_steps: int = field(default=70)
     #Number of steps (in paper K_min = k_min * reverse_steps)
-    k_min: float = field(default=0.3)
-    k_max: float = field(default=0.6)
+    k_min: float = field(default=0.4)
+    k_max: float = field(default=0.7)
     #Bigger -> more like source image
-    nu: float = field(default=0.7)
+    nu: float = field(default=0.8)
     guidance: float = field(default=10)
     prompts = ["coffee machine"]
     
@@ -36,9 +36,16 @@ class MagicMixCFG:
 def main(MM_cfg: MagicMixCFG):
     load_dotenv(verbose=True)
     
-    mixed_images = semantic_mixture(MM_cfg)
+    mixed_image = semantic_mixture(MM_cfg)
     
-    mixed_images[0].save(os.path.join(MM_cfg.exper_dir, "ex.jpg"))
+    for i, image in enumerate(mixed_image):
+        image.save(
+            os.path.join(
+                MM_cfg.exper_dir,
+                f"image_text_mix_csp_{MM_cfg.prompts[i]}.jpg",
+            )
+        )
+    #mixed_image[0].save(os.path.join(MM_cfg.exper_dir, "ex.jpg"))
 
 
 if __name__ == "__main__":
