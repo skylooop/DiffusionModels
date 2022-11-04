@@ -8,7 +8,7 @@
 <p align="center">
   <img src="addons/cat.jpeg" width="256" height="455">
   <img src="addons/cat_coffee.jpg" width="256" height="455">
-  <img src="addons/image_text_mix_csp_coffee machine.jpg" width="256" height="455">
+  <img src="addons/modified_image_mouse.jpg" width="256" height="455">
 </p>
 
 ## Code run

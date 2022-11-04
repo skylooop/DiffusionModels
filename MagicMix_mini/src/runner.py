@@ -17,7 +17,7 @@ class MagicMixCFG:
     k_min: float = field(default=0.4)
     k_max: float = field(default=0.7)
     #Bigger -> more like source image
-    nu: float = field(default=0.8)
+    nu: float = field(default=0.7)
     guidance: float = field(default=10)
     prompts = ["coffee machine"]
     
@@ -42,7 +42,7 @@ def main(MM_cfg: MagicMixCFG):
         image.save(
             os.path.join(
                 MM_cfg.exper_dir,
-                f"image_text_mix_csp_{MM_cfg.prompts[i]}.jpg",
+                f"modified_image_{MM_cfg.prompts[i]}.jpg",
             )
         )
     #mixed_image[0].save(os.path.join(MM_cfg.exper_dir, "ex.jpg"))
