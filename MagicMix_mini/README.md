@@ -4,4 +4,9 @@
 ![Architecture](addons/arch.png)
 
 ## Examples
-![cat1](addons/cat.jpeg) ![](addons/cat_coffee.jpg) ![](addons/cat_coffee2.jpg)
+
+<p align="center">
+  <img src="addons/cat.jpeg" width="256" height="455">
+  <img src="addons/cat_coffee.jpg" width="256" height="455">
+  <img src="addons/cat_coffee2.jpg" width="256" height="455">
+</p>
