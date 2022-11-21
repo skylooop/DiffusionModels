@@ -4,7 +4,7 @@ Mainly for self-study, but the main difference is that instead of Imagen used by
 
 ## Running
 
-Everything is contained in [cross_attention.py](/cross_attention.py)
+Everything is contained in [cross_attention.py](https://github.com/skylooop/DiffusionModels/blob/master/DiffusionAttentionControl/cross_attention.py)
 
 
 
