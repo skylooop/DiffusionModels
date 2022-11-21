@@ -1,3 +1,6 @@
+# List of implemented diffusion Samplers
+Different samplers implementations can be found in [Samplers](https://github.com/skylooop/DiffusionModels/tree/master/Samplers)
+
 # List of implemented papers
 
 ## MagicMix
